@@ -1,54 +1,49 @@
-import { useEffect, useState } from "react";
-import { useParams, Link, useLocation } from "react-router-dom";
+import { useEffect, useState, useRef } from "react";
+import { Link, useParams, useLocation, Outlet } from "react-router-dom";
 import axios from "axios";
-import MovieCast from "../components/MovieCast/MovieCast";
-import MovieReviews from "../components/MovieReviews/MovieReviews";
 
-const BASE_URL = "https://api.themoviedb.org/3";
-const API_KEY = "18efadd4c3d35845ab9ed0dc7d1aa4ce"; // замени на свой API ключ
-const IMAGE_BASE_URL = "https://image.tmdb.org/t/p/w500";
+const API_KEY = "18efadd4c3d35845ab9ed0dc7d1aa4ce";
 
-function MovieDetailsPage() {
+const MovieDetailsPage = () => {
   const { movieId } = useParams();
-  const [movie, setMovie] = useState({});
-  const [error, setError] = useState(null);
+  const [movie, setMovie] = useState(null);
   const location = useLocation();
+  const backLink = useRef(location.state?.from || "/movies");
 
   useEffect(() => {
-    async function fetchMovieDetails() {
-      try {
-        const response = await axios.get(
-          `${BASE_URL}/movie/${movieId}?api_key=${API_KEY}`
-        );
-        setMovie(response.data);
-      } catch (err) {
-        setError("Ошибка при загрузке данных о фильме");
-        console.error(err);
-      }
-    }
+    if (!movieId) return;
 
-    fetchMovieDetails();
+    axios
+      .get(`https://api.themoviedb.org/3/movie/${movieId}?api_key=${API_KEY}`)
+      .then((res) => setMovie(res.data))
+      .catch(console.error);
   }, [movieId]);
 
-  if (error) return <p>{error}</p>;
+  if (!movie) return <p>Loading...</p>;
+
+  const poster = movie.poster_path
+    ? `https://image.tmdb.org/t/p/w500/${movie.poster_path}`
+    : "https://via.placeholder.com/250x375?text=No+Image";
 
   return (
     <div>
-      <Link to={location.state?.from ?? "/"}>Back to movies</Link>
+      <Link to={backLink.current}>← Go back</Link>
       <h2>{movie.title}</h2>
-      {movie.poster_path && (
-        <img
-          src={`${IMAGE_BASE_URL}${movie.poster_path}`}
-          alt={movie.title}
-          width="200"
-        />
-      )}
+      <img src={poster} alt={movie.title} width={250} />
       <p>{movie.overview}</p>
 
-      <MovieCast />
-      <MovieReviews />
+      <ul>
+        <li>
+          <Link to="cast">👉 Cast</Link>
+        </li>
+        <li>
+          <Link to="reviews">👉 Reviews</Link>
+        </li>
+      </ul>
+
+      <Outlet />
     </div>
   );
-}
+};
 
 export default MovieDetailsPage;

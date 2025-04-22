@@ -4,7 +4,7 @@ import axios from "axios";
 import "./MovieCast.module.css";
 
 const BASE_URL = "https://api.themoviedb.org/3";
-const API_KEY = "18efadd4c3d35845ab9ed0dc7d1aa4ce"; // замени на свой API ключ
+const API_KEY = "18efadd4c3d35845ab9ed0dc7d1aa4ce";
 const IMAGE_BASE_URL = "https://image.tmdb.org/t/p/w200";
 
 function MovieCast() {

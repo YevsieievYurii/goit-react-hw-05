@@ -3,7 +3,7 @@ import MovieList from "../components/MovieList/MovieList";
 import axios from "axios";
 
 const BASE_URL = "https://api.themoviedb.org/3";
-const API_KEY = "18efadd4c3d35845ab9ed0dc7d1aa4ce"; // замени на свой API ключ
+const API_KEY = "18efadd4c3d35845ab9ed0dc7d1aa4ce";
 
 function HomePage() {
   const [movies, setMovies] = useState([]);
@@ -16,7 +16,7 @@ function HomePage() {
         );
         setMovies(response.data.results);
       } catch (error) {
-        console.error("Ошибка при загрузке фильмов", error);
+        console.error("Error loading movies", error);
       }
     }
 

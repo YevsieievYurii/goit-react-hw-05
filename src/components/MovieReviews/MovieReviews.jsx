@@ -4,7 +4,7 @@ import axios from "axios";
 import "./MovieReviews.module.css";
 
 const BASE_URL = "https://api.themoviedb.org/3";
-const API_KEY = "18efadd4c3d35845ab9ed0dc7d1aa4ce"; // замени на свой API ключ
+const API_KEY = "18efadd4c3d35845ab9ed0dc7d1aa4ce";
 
 function MovieReviews() {
   const { movieId } = useParams();
@@ -29,7 +29,7 @@ function MovieReviews() {
 
   if (error) return <p>{error}</p>;
 
-  if (reviews.length === 0) return <p>Отзывов нет</p>;
+  if (reviews.length === 0) return <p>No reviews yet</p>;
 
   return (
     <div>
